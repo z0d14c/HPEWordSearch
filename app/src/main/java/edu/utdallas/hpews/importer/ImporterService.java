@@ -34,4 +34,10 @@ public class ImporterService {
         // TODO: implement
         throw new UnsupportedOperationException();
     }
+
+
+    public Puzzle processImage(Image image){
+        // TODO: implement
+        throw new UnsupportedOperationException();
+    }
 }

@@ -1,5 +1,6 @@
 package edu.utdallas.hpews.importer;
 
+import android.graphics.Bitmap;
 import android.media.Image;
 
 import edu.utdallas.hpews.model.Puzzle;
@@ -14,17 +15,23 @@ public class ImporterService {
         return ourInstance;
     }
 
-
+    private ImageHandler ImgHandler;
+    private ImageProcessor ImgProcessor;
 
     private ImporterService() {
+        ImgHandler = new ImageHandler();
+        ImgProcessor = new ImageProcessor();
     }
 
 
 
     public Puzzle importPuzzle(Image image) {
-
         // TODO: implement
         throw new UnsupportedOperationException();
+    }
 
+    public Bitmap takeImage(){
+        // TODO: implement
+        throw new UnsupportedOperationException();
     }
 }

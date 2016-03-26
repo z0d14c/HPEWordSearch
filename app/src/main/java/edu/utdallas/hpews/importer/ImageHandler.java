@@ -11,6 +11,7 @@ public class ImageHandler {
 
     public Bitmap takePicture(){
         //TODO: implement
+        //Intent intent = new Intent();
         throw new UnsupportedOperationException();
     }
 

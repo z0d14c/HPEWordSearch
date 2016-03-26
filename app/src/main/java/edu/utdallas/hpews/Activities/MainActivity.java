@@ -1,7 +1,9 @@
 package edu.utdallas.hpews.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
 
 import edu.utdallas.hpews.R;
 
@@ -28,4 +30,8 @@ public class MainActivity extends FragmentActivity{
         super.onResume();
     }
 
+    public void launchImporter(View view){
+        Intent intent = new Intent(this, ImportActivity.class);
+        startActivity(intent);
+    }
 }

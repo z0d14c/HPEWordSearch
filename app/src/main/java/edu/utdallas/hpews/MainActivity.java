@@ -1,11 +1,11 @@
-package edu.utdallas.hpews.Activities;
+package edu.utdallas.hpews;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
-import edu.utdallas.hpews.R;
+import edu.utdallas.hpews.importer.ImportServiceActivity;
 
 /**
  * Created by imper on 3/26/2016.
@@ -31,7 +31,7 @@ public class MainActivity extends FragmentActivity{
     }
 
     public void launchImporter(View view){
-        Intent intent = new Intent(this, ImportActivity.class);
+        Intent intent = new Intent(this, ImportServiceActivity.class);
         startActivity(intent);
     }
 }

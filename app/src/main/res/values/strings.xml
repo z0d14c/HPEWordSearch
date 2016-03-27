@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">HPEWS</string>
     <string name="title_activity_import">ImportActivity</string>
+
+    <string name="dialog_error_title">Oops!</string>
+    <string name="dialog_button_ok">Ok</string>
+    <string name="dialog_noImage_error">Please select or take an image to turn into a puzzle.</string>
 </resources>

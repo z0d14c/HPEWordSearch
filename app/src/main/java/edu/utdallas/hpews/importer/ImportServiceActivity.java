@@ -5,13 +5,20 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.googlecode.tesseract.android.TessBaseAPI;
+
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 import edu.utdallas.hpews.R;
 
@@ -72,13 +79,34 @@ public class ImportServiceActivity extends AppCompatActivity {
         }
     }
 
+    public static final String DATA_PATH= "/HPEWordSearch/assets/";
     public void ProcessImage(View view){
+        Log.v("ProcessImage", "Starting OCR");
+
         if (image != null){
             //Intent processImageIntent = new Intent();
             //TODO: implement
+            //Intent processImageIntent = new Intent();
+
+            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+            URL url = classLoader.getResource("app/assets/");
+            //Log.v("ProcessImage", url.toString());
+            //OCR that hoe
+            //if ((new File(DATA_PATH + "tessdata/eng.traineddata")).exists()){
+                TessBaseAPI baseAPI = new TessBaseAPI();
+                baseAPI.init("/mnt/sdcard/tesseract/", "eng");
+                baseAPI.setImage(image);
+                String recognizedText = baseAPI.getUTF8Text();
+                baseAPI.end();
+
+                TextView OCRText = (TextView)findViewById(R.id.OCRText);
+                OCRText.setText(recognizedText);
+           // }
+
         }
         else{
             showErrorDialog();
+            Log.v("ProcessImage", "Error, no image selected");
         }
     }
 

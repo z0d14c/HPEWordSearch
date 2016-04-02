@@ -22,11 +22,18 @@ import java.net.URL;
 
 import edu.utdallas.hpews.R;
 
+//TODO: Delegate imageHandler and importService methods
+
 public class ImportServiceActivity extends AppCompatActivity {
     Bitmap image;
 
+    private ImageProcessor imageProcessor;
+    private ImageHandler imageHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_import);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -82,26 +89,14 @@ public class ImportServiceActivity extends AppCompatActivity {
     public static final String DATA_PATH= "/HPEWordSearch/assets/";
     public void ProcessImage(View view){
         Log.v("ProcessImage", "Starting OCR");
-
+        imageProcessor = new ImageProcessor(this);
         if (image != null){
-            //Intent processImageIntent = new Intent();
-            //TODO: implement
-            //Intent processImageIntent = new Intent();
+            //imageProcessor.context = this;
 
-            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-            URL url = classLoader.getResource("app/assets/");
-            //Log.v("ProcessImage", url.toString());
-            //OCR that hoe
-            //if ((new File(DATA_PATH + "tessdata/eng.traineddata")).exists()){
-                TessBaseAPI baseAPI = new TessBaseAPI();
-                baseAPI.init("/mnt/sdcard/tesseract/", "eng");
-                baseAPI.setImage(image);
-                String recognizedText = baseAPI.getUTF8Text();
-                baseAPI.end();
+            String recognizedText = imageProcessor.getOCRText(image);
 
-                TextView OCRText = (TextView)findViewById(R.id.OCRText);
-                OCRText.setText(recognizedText);
-           // }
+            TextView OCRText = (TextView)findViewById(R.id.OCRText);
+            OCRText.setText(recognizedText);
 
         }
         else{

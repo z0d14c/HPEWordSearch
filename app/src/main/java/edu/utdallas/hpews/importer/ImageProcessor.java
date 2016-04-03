@@ -3,6 +3,7 @@ package edu.utdallas.hpews.importer;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
@@ -24,7 +25,7 @@ public class ImageProcessor {
 
     private TessBaseAPI mTess;
     public Context context;
-    String datapath = "";
+    private String datapath = "";
 
     public ImageProcessor(Context ctx){
         context = ctx;
@@ -34,25 +35,25 @@ public class ImageProcessor {
         String language = "eng";
         File dir = new File(datapath + "/tessdata");
         if (!dir.exists()){
-            Log.v("ImageProcessor", "Directory " + datapath + "Not found!");
+            Log.d("ImageProcessor", "Directory " + datapath + "Not found!");
             if(dir.mkdirs()){
                 copyFiles();
-                Log.v("ImageProcessor", "Copied training data to device");
+                Log.d("ImageProcessor", "Copied training data to device");
             }
             else{
-                Log.v("ImageProcessor", "Unable to create tesseract directory");
+                Log.d("ImageProcessor", "Unable to create tesseract directory");
             }
         }
         if(dir.exists()){
-            Log.v("ImageProcessor", "Directory " + datapath + " found!");
+            Log.d("ImageProcessor", "Directory " + datapath + " found!");
 
             File td = new File(datapath + "/tessdata/eng.traineddata");
             if (!td.exists()){
-                Log.v("ImageProcessor", "No training data file found. Copying to device...");
+                Log.d("ImageProcessor", "No training data file found. Copying to device...");
                 copyFiles();
             }
             else{
-                Log.v("ImageProcessor", "Training data file found! Size : " + td.length() + " bytes");
+                Log.d("ImageProcessor", "Training data file found! Size : " + td.length() + " bytes");
             }
             Log.v("ImageProcessor", "Attempting to init Tess");
             mTess.init(datapath, language);
@@ -99,13 +100,19 @@ public class ImageProcessor {
     }
 
 
-    public String getOCRText(Bitmap bitmap){
-        mTess.setImage(bitmap);
-        String result = mTess.getUTF8Text();
-        return result;
+    public String getOCRText(Bitmap bitmap, Uri imageurl){
+        String OCRresult = null;
+        try{
+            Bitmap touchedUpImage = PhotoHelper.touchUpPhoto(bitmap, imageurl);
+            mTess.setImage(touchedUpImage);
+            OCRresult = mTess.getUTF8Text();
+        }
+    catch(Exception e){
+            e.printStackTrace();
+        }
+        return OCRresult;
     }
 
-    //TODO: rotate image and do touchups before OCRing
     //TODO: quality check method
     //TODO: processImage: This method turns OCR text into a puzzle.
 

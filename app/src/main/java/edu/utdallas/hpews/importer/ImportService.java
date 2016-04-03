@@ -8,12 +8,14 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.io.IOException;
 
 import edu.utdallas.hpews.R;
@@ -26,11 +28,12 @@ public class ImportService extends ContextWrapper{
 //    public static ImportService getInstance() {
 //        return ourInstance;
 //    }
-
+    public final String CLASS_TAG =  "ImportService";
     private Activity activityRef;
     private ImageProcessor imageProcessor;
     private ImageHandler imageHandler;
     private Bitmap image;
+    private Uri imageurl;
 
 
     public ImportService(Context context){
@@ -50,7 +53,7 @@ public class ImportService extends ContextWrapper{
 
     public void ProcessImage(){
         if (image != null){
-            String recognizedText = imageProcessor.getOCRText(image);
+            String recognizedText = imageProcessor.getOCRText(image, imageurl);
             TextView OCRText = (TextView) activityRef.findViewById(R.id.OCRText);
             OCRText.setText(recognizedText);
         }
@@ -69,12 +72,16 @@ public class ImportService extends ContextWrapper{
     private static final int REQUEST_IMAGE_CAPTURE = 2;
     public void handleActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData()!=null){
-            Uri uri = data.getData();
+            imageurl = data.getData();
+            //String imagePATH = PhotoHelper.getRealPathFromURI(activityRef, tempurl);
+            String path = imageurl.getPath();
+            Log.v(CLASS_TAG, "Chosen imageURL: " + imageurl);
+            Log.v(CLASS_TAG, "Chosen image path: " + path);
             try{
-                image = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                image = PhotoHelper.getPhotoFromURI(activityRef, imageurl);
                 setImageView(R.id.imageView, image);
             }
-            catch(IOException e){
+            catch(Exception e){
                 e.printStackTrace();
             }
         }
@@ -84,12 +91,18 @@ public class ImportService extends ContextWrapper{
                 Bundle extras = data.getExtras();
                 image = (Bitmap) extras.get("data");
                 setImageView(R.id.imageView, image);
+
+                //TODO: fix url encoding so image can get rotated
+                imageurl = PhotoHelper.getPhotoFileURI(activityRef, "photo.jpg");
+                Log.v(CLASS_TAG, "Taken imageURL: " + imageurl.toString());
             }
             catch(Exception e){
                 e.printStackTrace();
             }
         }
     }
+
+
 
     private void setImageView(int imageViewID, Bitmap image){
         ImageView imageView = (ImageView) activityRef.findViewById(imageViewID);

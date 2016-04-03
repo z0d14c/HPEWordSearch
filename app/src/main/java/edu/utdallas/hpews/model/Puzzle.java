@@ -24,7 +24,7 @@ public class Puzzle {
 
 
     public Character getCharacterAt(int x, int y) {
-        if (x >= this.dimension || y >= this.dimension) {
+        if (x < 0 || x >= this.dimension || y < 0 || y >= this.dimension) {
             throw new IllegalArgumentException("requested coordinates out of range; puzzle dimension is " + this.dimension);
         }
 
@@ -32,7 +32,7 @@ public class Puzzle {
     }
 
     public void setCharacterAt(int x, int y, char character) {
-        if (x >= this.dimension || y >= this.dimension) {
+        if (x < 0 || x >= this.dimension || y < 0 || y >= this.dimension) {
             throw new IllegalArgumentException("requested coordinates out of range; puzzle dimension is " + this.dimension);
         }
 

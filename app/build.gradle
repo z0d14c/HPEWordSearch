@@ -26,6 +26,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.android.support:support-v4:23.2.1'
     compile 'com.android.support:design:23.2.1'
+<<<<<<< HEAD
 
     androidTestCompile 'com.android.support:support-annotations:23.2.1'
     androidTestCompile 'com.android.support.test:runner:0.4.1'
@@ -37,3 +38,7 @@ dependencies {
     // Optional -- UI testing with UI Automator
     androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.1'
 }
+=======
+    compile 'com.rmtheis:tess-two:5.4.1'
+}
+>>>>>>> IPTesseract

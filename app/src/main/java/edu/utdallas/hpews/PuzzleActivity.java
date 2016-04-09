@@ -18,15 +18,26 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import edu.utdallas.hpews.R;
+import edu.utdallas.hpews.generator.GeneratorService;
+import edu.utdallas.hpews.model.Puzzle;
 
 public class PuzzleActivity extends AppCompatActivity {
+
+    public static final String PUZZLE_PARAMETER_KEY = "puzzle";
+
     String LogTag = "PuzzleActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle);
         final Context context = this;
-        final int dimensions = 9;
+
+        Puzzle puzzle = (Puzzle)getIntent().getSerializableExtra(PUZZLE_PARAMETER_KEY);
+        if (puzzle == null) {
+            throw new IllegalStateException("puzzle missing from Intent extras");
+        }
+
+        final int dimensions = puzzle.getDimension();
         final LinearLayout WordPuzzleLayout = (LinearLayout) findViewById(R.id.WordPuzzleLayout);
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -41,7 +52,7 @@ public class PuzzleActivity extends AppCompatActivity {
                 letters[i] = "A";
             }
             gridview.setNumColumns(dimensions);
-            gridview.setAdapter(new PuzzleAdapter(context, dimensions, width, height, letters));
+            gridview.setAdapter(new PuzzleAdapter(context, puzzle));
         }
         Log.v(LogTag, width.toString());
         Log.v(LogTag, height.toString());
@@ -75,10 +86,17 @@ public class PuzzleActivity extends AppCompatActivity {
         private int dimensions;
         private int width;
         private int height;
-        public PuzzleAdapter(Context context, int dimensions, int width, int height, String[] letters) {
-            this.dimensions = dimensions;
+        public PuzzleAdapter(Context context, Puzzle puzzle) {
             this.context = context;
-            this.PuzzleLetters = letters;
+
+            this.dimensions = puzzle.getDimension();
+            this.PuzzleLetters = new String[this.dimensions * this.dimensions];
+            int i = 0;
+            for (int x = 0; x < this.dimensions; x++) {
+                for (int y = 0; y < this.dimensions; y++) {
+                    this.PuzzleLetters[i++] = puzzle.getCharacterAt(x, y).toString();
+                }
+            }
         }
 
         // return number of items (characters) in puzzle

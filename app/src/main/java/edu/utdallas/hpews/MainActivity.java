@@ -24,18 +24,19 @@ public class MainActivity extends FragmentActivity{
         // initialized; after we make sure that the "small" size performs well, we can try to bump this
         // to MEDIUM or LARGE.
         DictionaryService.initialize(getApplicationContext(), DictionaryService.SIZE.SMALL);
-        Button generateButton = (Button) findViewById(R.id.generate_button);
-        generateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goToPuzzle();
-            }
-        });
+
+
     }
 
     // goes to PuzzleView. TODO: add puzzle param to pass to intent/activity
     private void goToPuzzle() {
         Intent intent = new Intent(MainActivity.this, PuzzleActivity.class);
+        startActivity(intent);
+
+    }
+
+    private void launchGeneratorActivity(View view){
+        Intent intent = new Intent(MainActivity.this, GeneratorServiceActivity.class);
         startActivity(intent);
     }
 

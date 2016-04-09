@@ -24,6 +24,19 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+        <activity
+            android:name=".PuzzleActivity"
+            android:label="@string/title_activity_puzzle"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".GeneratorServiceActivity"
+            android:label="@string/title_activity_generator_service"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.utdallas.hpews.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

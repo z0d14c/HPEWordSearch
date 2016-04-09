@@ -33,5 +33,5 @@ captures/
 
 
 #Android Studio config files
-.idea
+.idea/
 *.iml

@@ -1,12 +1,13 @@
 package edu.utdallas.hpews.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by sasha on 3/26/16.
  */
-public class Puzzle {
+public class Puzzle implements Serializable {
 
     private final int dimension;
     private final Character[][] data;

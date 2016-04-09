@@ -5,13 +5,14 @@ import edu.utdallas.hpews.model.Coordinate;
 import edu.utdallas.hpews.model.Direction;
 import edu.utdallas.hpews.solver.DictionaryService;
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 public class GeneratorService {
 
     public static final int DEFAULT_DIMENSION = 25;
-    public static final int DEFAULT_SIZE = 10;
+    public static final int DEFAULT_SOLUTIONS = 10;
+    public static final int MAX_ATTEMPTS = 100;
 
     private static GeneratorService ourInstance = new GeneratorService();
     public static GeneratorService getInstance() {
@@ -32,20 +33,27 @@ public class GeneratorService {
         Puzzle puzzle = new Puzzle(dimension);
 
         // fill in words
-        List<String> wordList = DictionaryService.getInstance().getWords(DEFAULT_SIZE);
+        List<String> wordList = DictionaryService.getInstance().getWords(DEFAULT_SOLUTIONS);
 
         for (int i = 0; i < wordList.size(); i++) {
             boolean successful = false;
-            while (successful) {
+            int attempts = 0;
+            while (successful != true && attempts <= MAX_ATTEMPTS) {
                 try {
-                    Coordinate coord = this.generateRandomCoord();
+                    Coordinate coord = this.generateRandomCoord(dimension);
                     Direction dir = this.generateRandomDir();
                     puzzle.setWordAt(coord.getX(), coord.getY(), dir, wordList.get(i));
                     successful = true;
                 }
                 catch (IllegalArgumentException ex) {
-                    System.err.println("IllegalArgumentException: " + ex.getMessage());
+
+                } finally {
+                    attempts++;
                 }
+            }
+
+            if (successful != true) {
+                System.out.println("GeneratorService: unable to set word '" + wordList.get(i) + "' after " + attempts + " attempts!");
             }
         }
 
@@ -66,15 +74,14 @@ public class GeneratorService {
     }
 
     private int generateRandomInt(int min, int max){
-        Random rand = new Random();
-        int value = rand.nextInt(max) + min;
-
-        return value;
+        // nextInt is normally exclusive of the top value,
+        // so add 1 to make it inclusive
+        return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
 
     private char generateRandomChar() {
         int min = 'a';
-        int max = 26;
+        int max = 'z';
 
         int value = generateRandomInt(min, max);
 
@@ -84,9 +91,9 @@ public class GeneratorService {
         return randomChar;
     }
 
-    private Coordinate generateRandomCoord(){
-        int min = 1;
-        int max = DEFAULT_DIMENSION;
+    private Coordinate generateRandomCoord(int dimension){
+        int min = 0;
+        int max = dimension - 1;
 
         int randomX = generateRandomInt(min,max);
         int randomY = generateRandomInt(min,max);
@@ -97,33 +104,12 @@ public class GeneratorService {
     }
 
     private Direction generateRandomDir(){
-        int min = 1;
-        int max = 8;
+        int min = 0;
+        int max = Direction.values().length - 1;
 
         int randomDir = generateRandomInt(min,max);
 
-        Direction direction;
-
-        switch(randomDir) {
-            case 1: direction = Direction._0;
-                return direction;
-            case 2: direction = Direction._45;
-                return direction;
-            case 3: direction = Direction._90;
-                return direction;
-            case 4: direction = Direction._135;
-                return direction;
-            case 5: direction = Direction._180;
-                return direction;
-            case 6: direction = Direction._225;
-                return direction;
-            case 7: direction = Direction._270;
-                return direction;
-            case 8: direction = Direction._315;
-                return direction;
-            default: direction = Direction._0;
-                return direction;
-        }
+        return Direction.values()[randomDir];
     }
 
 }

@@ -19,13 +19,7 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2dbb49ff-f5f9-4e60-b3a4-5e483aaabbe6" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/edu/utdallas/hpews/importer/ImageProcessor.java" afterPath="$PROJECT_DIR$/app/src/main/java/edu/utdallas/hpews/importer/ImageProcessor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/edu/utdallas/hpews/importer/ImportService.java" afterPath="$PROJECT_DIR$/app/src/main/java/edu/utdallas/hpews/importer/ImportService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build.gradle" afterPath="$PROJECT_DIR$/app/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="2dbb49ff-f5f9-4e60-b3a4-5e483aaabbe6" name="Default" comment="" />
     <ignored path="HPEWordSearch.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -55,10 +49,10 @@
       <file leaf-file-name="ImageProcessor.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/utdallas/hpews/importer/ImageProcessor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="2.4668007">
-              <caret line="101" column="0" selection-start-line="101" selection-start-column="0" selection-end-line="101" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.87323946">
+              <caret line="65" column="12" selection-start-line="65" selection-start-column="12" selection-end-line="65" selection-end-column="12" />
               <folding>
-                <marker date="1460313242624" expanded="true" signature="3594:3752" placeholder="..." />
+                <marker date="1460313418170" expanded="true" signature="3594:3752" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -2298,7 +2292,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
           <folding>
-            <marker date="1460313242624" expanded="true" signature="3594:3752" placeholder="..." />
+            <marker date="1460313418170" expanded="true" signature="3594:3752" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -2750,10 +2744,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/utdallas/hpews/importer/ImageProcessor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.4668007">
-          <caret line="101" column="0" selection-start-line="101" selection-start-column="0" selection-end-line="101" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.87323946">
+          <caret line="65" column="12" selection-start-line="65" selection-start-column="12" selection-end-line="65" selection-end-column="12" />
           <folding>
-            <marker date="1460313242624" expanded="true" signature="3594:3752" placeholder="..." />
+            <marker date="1460313418170" expanded="true" signature="3594:3752" placeholder="..." />
           </folding>
         </state>
       </provider>

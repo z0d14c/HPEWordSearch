@@ -19,15 +19,12 @@ import java.io.File;
 import java.io.IOException;
 
 import edu.utdallas.hpews.R;
+import edu.utdallas.hpews.model.Puzzle;
 
 /**
  * Created by imper on 4/1/2016.
  */
 public class ImportService extends ContextWrapper{
-//    private static ImportService ourInstance = new ImportService();
-//    public static ImportService getInstance() {
-//        return ourInstance;
-//    }
     public final String CLASS_TAG =  "ImportService";
     private Activity activityRef;
     private ImageProcessor imageProcessor;
@@ -53,19 +50,41 @@ public class ImportService extends ContextWrapper{
 
     public void ProcessImage(){
         if (image != null){
-            String recognizedText = imageProcessor.getOCRText(image, imageurl);
+
+            Log.v(CLASS_TAG, "Trying to process..");
+            String recognizedText = imageProcessor.getOCRText(image);
+
+            String[] processedText = imageProcessor.processImage(image, imageurl);
+            if ( processedText!= null){
+                Log.v(CLASS_TAG, "Image has been processed");
+                //Launch Solver activity from here
+            }
+            else{
+                Log.v(CLASS_TAG, "Image could not be processed");
+                showErrorDialog("unableProcess");
+            }
+
             TextView OCRText = (TextView) activityRef.findViewById(R.id.OCRText);
             OCRText.setText(recognizedText);
         }
         else{
             Log.w("ProcessImage", "No image selected, cannot process");
-            showErrorDialog();
+            showErrorDialog("noImage");
         }
     }
 
-    public void showErrorDialog(){
-        DialogFragment errorDialog = new NoImageDialogFragment();
-        errorDialog.show(activityRef.getFragmentManager(), "NoImage");
+    public void showErrorDialog(String error){
+        DialogFragment errorDialog;
+        switch (error){
+            case "noImage" :
+                errorDialog = new NoImageDialogFragment();
+                errorDialog.show(activityRef.getFragmentManager(), "NoImage");
+                break;
+            case "unableProcess" :
+                errorDialog = new UnableToProcessDialogFragment();
+                errorDialog.show(activityRef.getFragmentManager(), "UnableToProcess");
+                break;
+        }
     }
 
     private static final int PICK_IMAGE_REQUEST = 1;

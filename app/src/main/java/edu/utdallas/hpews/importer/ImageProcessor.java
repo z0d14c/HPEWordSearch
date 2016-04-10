@@ -26,6 +26,7 @@ public class ImageProcessor {
     private TessBaseAPI mTess;
     public Context context;
     private String datapath = "";
+    public final String CLASS_TAG = "ImageProcessor";
 
     public ImageProcessor(Context ctx){
         context = ctx;
@@ -100,24 +101,87 @@ public class ImageProcessor {
     }
 
 
-    public String getOCRText(Bitmap bitmap, Uri imageurl){
+    public String getOCRText(Bitmap image){
         String OCRresult = null;
         try{
-            Bitmap touchedUpImage = PhotoHelper.touchUpPhoto(bitmap, imageurl);
-            mTess.setImage(touchedUpImage);
+            mTess.setImage(image);
             OCRresult = mTess.getUTF8Text();
+            Log.i(CLASS_TAG, OCRresult);
+
         }
-    catch(Exception e){
+        catch(Exception e){
             e.printStackTrace();
         }
         return OCRresult;
     }
 
-    //TODO: quality check method
-    //TODO: processImage: This method turns OCR text into a puzzle.
+    public String[] processImage(Bitmap image,Uri imageurl){
+        image = PhotoHelper.touchUpPhoto(image, imageurl);
+        String OCRresult =  getOCRText(image);
+        /*For testing*/
+//        String OCRresult = "ab dc\n" +
+//                            "a b c d\n" +
+//                            "ab cd\n" +
+//                            "abc d\n";
+        boolean processable = false;
+        String[] lines = groomText(OCRresult);
+        if (resultsGood(lines)){
+            processable = true;
+            generatePuzzle(10, lines);
+            return lines;
+        }
 
-    public Puzzle processImage(Bitmap bitmap){
-
-        throw new UnsupportedOperationException();
+        return null;
     }
+
+    private String[] groomText(String OCRresult){
+        String[] lines = OCRresult.split("\n");
+        for (int i = 0; i < lines.length; i++){
+            lines[i] = lines[i].replace(" ", "");
+            Log.i(CLASS_TAG, lines[i]);
+        }
+
+       return lines;
+    }
+    public final static int MIN_N = 3;
+    private boolean resultsGood(String[] lines){
+        boolean isGood = true;
+
+        int vertical = lines.length;
+        if (vertical >= MIN_N){
+            for (String line: lines) {
+                if (line.length() != vertical) {
+                    Log.i(CLASS_TAG, "Sides don't match.");
+                    isGood = false;
+                    break;
+                }
+
+                if (line.matches("[/d /W]")){  //legal chars
+                    Log.i(CLASS_TAG, "Contains illegal characters.");
+                    isGood = false;
+                    break;
+                }
+            }
+        }
+        else {
+            Log.i(CLASS_TAG, "Not enough characters.");
+            isGood = false;
+        }
+        return isGood;
+    }
+
+
+
+    public Puzzle generatePuzzle(int size, String[] text){
+        Puzzle puzzle = new Puzzle(size);
+
+        for (int i = 0; i < text.length; i++ ) {
+            char[] letters = text[i].toCharArray();
+            for (int j = 0; j < letters.length; j++){
+                puzzle.setCharacterAt(i, j, letters[j]);
+            }
+        }
+        return puzzle;
+    }
+
 }

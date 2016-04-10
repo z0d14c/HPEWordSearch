@@ -31,7 +31,7 @@
         <activity
             android:name=".PuzzleActivity"
             android:label="@string/title_activity_puzzle"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

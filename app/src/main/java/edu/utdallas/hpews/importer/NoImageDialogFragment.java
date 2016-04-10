@@ -24,5 +24,4 @@ public class NoImageDialogFragment extends DialogFragment {
                 });
         return builder.create();
     }
-
 }

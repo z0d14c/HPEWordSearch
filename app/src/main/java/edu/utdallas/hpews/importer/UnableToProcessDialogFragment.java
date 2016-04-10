@@ -1,6 +1,5 @@
 package edu.utdallas.hpews.importer;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -10,13 +9,13 @@ import android.os.Bundle;
 import edu.utdallas.hpews.R;
 
 /**
- * Created by imper on 3/26/2016.
+ * Created by imper on 4/10/2016.
  */
-public class NoImageDialogFragment extends DialogFragment {
+public class UnableToProcessDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(R.string.dialog_noImage_error)
+        builder.setMessage(R.string.dialog_unableToProcess_error)
                 .setTitle(R.string.dialog_error_title)
                 .setNeutralButton(R.string.dialog_button_ok, new DialogInterface.OnClickListener() {
                     @Override
@@ -24,4 +23,5 @@ public class NoImageDialogFragment extends DialogFragment {
                 });
         return builder.create();
     }
+
 }

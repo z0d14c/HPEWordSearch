@@ -6,6 +6,7 @@
     <string name="dialog_error_title">Oops!</string>
     <string name="dialog_button_ok">Ok</string>
     <string name="dialog_noImage_error">Please select or take an image to turn into a puzzle.</string>
+    <string name="dialog_unableToProcess_error">The image could not be processed into a word puzzle. Please try again.</string>
     <string name="title_activity_puzzle">PuzzleActivity</string>
     <string name="title_activity_generator_service">GeneratorServiceActivity</string>
 </resources>

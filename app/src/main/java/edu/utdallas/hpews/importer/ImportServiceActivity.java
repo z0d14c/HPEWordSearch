@@ -1,22 +1,36 @@
 package edu.utdallas.hpews.importer;
 
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.googlecode.tesseract.android.TessBaseAPI;
+
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 import edu.utdallas.hpews.R;
 
+//TODO: Delegate imageHandler and importService methods
+/**
+ * Import Service Activity is resposible for binding UI events to their backend handler.
+ * All back end logic needs to happen in the handler.
+ * **/
 public class ImportServiceActivity extends AppCompatActivity {
     Bitmap image;
+    private ImportService importService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,15 +39,21 @@ public class ImportServiceActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        importService = new ImportService(this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        importService.handleActivityResult(requestCode, resultCode, data);
     }
 
     private static final int PICK_IMAGE_REQUEST = 1;
     public void launchPhotoPicker(View view){
-        Intent pickPhotoIntent = new Intent();
-        pickPhotoIntent.setType("image/*");
-        pickPhotoIntent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(pickPhotoIntent, "Select Picture"), PICK_IMAGE_REQUEST);
+        importService.choosePicture();
     }
+
 
     private static final int REQUEST_IMAGE_CAPTURE = 2;
     public void launchCamera(View view){
@@ -43,47 +63,11 @@ public class ImportServiceActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData()!=null){
-            Uri uri = data.getData();
-            try{
-                image = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                ImageView imageView = (ImageView)findViewById(R.id.imageView);
-                imageView.setImageBitmap(image);
-            }
-            catch(IOException e){
-                e.printStackTrace();
-            }
-        }
-
-        if(requestCode ==REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
-            try{
-                Bundle extras = data.getExtras();
-                image = (Bitmap) extras.get("data");
-                ImageView imageView = (ImageView)findViewById(R.id.imageView);
-                imageView.setImageBitmap(image);
-            }
-            catch(Exception e){
-                e.printStackTrace();
-            }
-        }
-    }
 
     public void ProcessImage(View view){
-        if (image != null){
-            //Intent processImageIntent = new Intent();
-            //TODO: implement
-        }
-        else{
-            showErrorDialog();
-        }
+        Log.v("ProcessImage", "Starting OCR");
+        importService.ProcessImage();
     }
 
-    public void showErrorDialog(){
-        DialogFragment errorDialog = new NoImageDialogFragment();
-        errorDialog.show(getFragmentManager(), "NoImage");
-    }
+
 }

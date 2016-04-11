@@ -12,7 +12,10 @@ public class GeneratorService {
 
     public static final int DEFAULT_DIMENSION = 25;
     public static final int DEFAULT_SOLUTIONS = 10;
-    public static final int MAX_ATTEMPTS = 100;
+    public static final int MAX_ATTEMPTS = 1000;
+
+    public static final int MIN_DIMENSION = 10;
+    public static final int MAX_DIMENSION = 25;
 
     private static GeneratorService ourInstance = new GeneratorService();
     public static GeneratorService getInstance() {
@@ -25,16 +28,28 @@ public class GeneratorService {
 
 
     public Puzzle generatePuzzle() {
-        return this.generatePuzzle(DEFAULT_DIMENSION);
+        return this.generatePuzzle(
+                DEFAULT_DIMENSION,
+                DictionaryService.getInstance().getWords(DEFAULT_SOLUTIONS)
+        );
     }
 
-    public Puzzle generatePuzzle(int dimension) {
+    public Puzzle generatePuzzle(List<String> wordList) {
+        return this.generatePuzzle(
+                DEFAULT_DIMENSION,
+                wordList
+        );
+    }
+
+    public Puzzle generatePuzzle(int dimension, List<String> wordList) {
+
+        if (dimension < MIN_DIMENSION || dimension > MAX_DIMENSION) {
+            throw new IllegalArgumentException("dimension argument out of range");
+        }
 
         Puzzle puzzle = new Puzzle(dimension);
 
         // fill in words
-        List<String> wordList = DictionaryService.getInstance().getWords(DEFAULT_SOLUTIONS);
-
         for (int i = 0; i < wordList.size(); i++) {
             boolean successful = false;
             int attempts = 0;

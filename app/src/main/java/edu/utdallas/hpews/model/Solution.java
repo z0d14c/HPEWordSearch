@@ -53,4 +53,24 @@ public class Solution {
 
         return Collections.unmodifiableList(coordinates);
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Solution solution = (Solution) o;
+
+        if (direction != solution.direction) return false;
+        return startingCoordinate.equals(solution.startingCoordinate);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = direction.hashCode();
+        result = 31 * result + startingCoordinate.hashCode();
+        return result;
+    }
 }

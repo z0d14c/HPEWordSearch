@@ -17,9 +17,15 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.List;
+
 import edu.utdallas.hpews.R;
 import edu.utdallas.hpews.generator.GeneratorService;
 import edu.utdallas.hpews.model.Puzzle;
+import edu.utdallas.hpews.model.Solution;
+import edu.utdallas.hpews.solver.SolverTask;
+import edu.utdallas.hpews.solver.SolverTaskFinishedCallback;
+import edu.utdallas.hpews.solver.SolverTaskProgressUpdateCallback;
 
 public class PuzzleActivity extends AppCompatActivity {
 
@@ -78,6 +84,24 @@ public class PuzzleActivity extends AppCompatActivity {
 //                        Toast.LENGTH_SHORT).show();
 //            }
 //        });
+
+
+
+        // when you're done setting up the initial UI state (including solution progress control)
+        new SolverTask(
+                new SolverTaskProgressUpdateCallback() {
+                    @Override
+                    public void progressUpdate(int progressPercent) {
+                        // Thomas/Izu:  fill in code to react to progress update parameter periodically
+                    }
+                },
+                new SolverTaskFinishedCallback() {
+                    @Override
+                    public void finished(List<Solution> solutions) {
+                        // Thomas/Izu:  fill in code to react to solution process completing
+                    }
+                }
+        ).execute(puzzle);
     }
 
     private class PuzzleAdapter extends BaseAdapter {

@@ -2,6 +2,7 @@ package edu.utdallas.hpews.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -23,6 +24,10 @@ public class Puzzle implements Serializable {
     }
 
 
+
+    public Character getCharacterAt(Coordinate coordinate) {
+        return this.getCharacterAt(coordinate.getX(), coordinate.getY());
+    }
 
     public Character getCharacterAt(int x, int y) {
         if (x < 0 || x >= this.dimension || y < 0 || y >= this.dimension) {
@@ -63,6 +68,39 @@ public class Puzzle implements Serializable {
 
     public List<Solution> getSolutions() {
         return solutions;
+    }
+
+    public List<String> getSolutionWords() {
+        List<String> results = new ArrayList<>();
+        for (Solution solution : this.solutions) {
+            results.add(solution.getWord());
+        }
+
+        Collections.sort(results);
+
+        return results;
+    }
+
+    public Solution getWordSolution(String word) {
+        Solution result = null;
+        for (Solution solution : this.solutions) {
+            if (solution.getWord().equals(word)) {
+                result = solution;
+                break;
+            }
+        }
+        return result;
+    }
+
+
+
+    public void print() {
+        for (int x = 0; x < this.getDimension(); x++) {
+            for (int y = 0; y < this.getDimension(); y++) {
+                System.out.print(this.data[x][y]);
+            }
+            System.out.print(System.lineSeparator());
+        }
     }
 
 }

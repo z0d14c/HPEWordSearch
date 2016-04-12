@@ -17,6 +17,8 @@ import edu.utdallas.hpews.R;
  */
 public class DictionaryService {
 
+    public static final int MIN_WORD_LENGTH = 5;
+
     public static enum SIZE {
         SMALL(10000),
         MEDIUM(20000),
@@ -89,6 +91,22 @@ public class DictionaryService {
         }
 
         return results;
+    }
+
+
+
+    public void forEachWord(WordProcessor processor, WordProcessorProgressCallback progressCallback) {
+
+        int progressIterations = this.dictionary.size() / 100;
+
+        for (int i = 0; i < this.dictionary.size(); i++) {
+            String word = this.dictionary.get(i);
+            processor.processWord(word);
+
+            if (i % progressIterations == 0) {
+                progressCallback.progressUpdate(i / progressIterations);
+            }
+        }
     }
 
 

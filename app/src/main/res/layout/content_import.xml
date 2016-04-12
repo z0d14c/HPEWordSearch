@@ -50,9 +50,17 @@
         android:layout_height="wrap_content"
         android:text="Puzzlify Image"
         android:id="@+id/ProcessImage"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="52dp"
-        android:onClick="ProcessImage" />
+        android:onClick="ProcessImage"
+        android:layout_below="@+id/ChoosePhotoBtn"
+        android:layout_toStartOf="@+id/TakePhotoBtn"
+        android:layout_marginTop="149dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OCR-ed text goes here"
+        android:id="@+id/OCRText"
+        android:layout_below="@+id/ProcessImage"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

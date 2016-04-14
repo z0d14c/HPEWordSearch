@@ -115,23 +115,28 @@ public class ImageProcessor {
         return OCRresult;
     }
 
+    private Puzzle puzzle;
     public String[] processImage(Bitmap image,Uri imageurl){
         image = PhotoHelper.touchUpPhoto(image, imageurl);
-        String OCRresult =  getOCRText(image);
+        //String OCRresult =  getOCRText(image);
         /*For testing*/
-//        String OCRresult = "ab dc\n" +
-//                            "a b c d\n" +
-//                            "ab cd\n" +
-//                            "abc d\n";
+        String OCRresult = "ab dc\n" +
+                            "a b c d\n" +
+                            "ab cd\n" +
+                            "abc d\n";
         boolean processable = false;
         String[] lines = groomText(OCRresult);
         if (resultsGood(lines)){
             processable = true;
-            generatePuzzle(10, lines);
+            puzzle = generatePuzzle(10, lines);
             return lines;
         }
 
         return null;
+    }
+
+    public Puzzle getPuzzle(){
+        return puzzle;
     }
 
     private String[] groomText(String OCRresult){

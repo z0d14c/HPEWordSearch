@@ -128,7 +128,7 @@ public class ImageProcessor {
         String[] lines = groomText(OCRresult);
         if (resultsGood(lines)){
             processable = true;
-            puzzle = generatePuzzle(10, lines);
+            puzzle = generatePuzzle(lines);
             return lines;
         }
 
@@ -177,8 +177,8 @@ public class ImageProcessor {
 
 
 
-    public Puzzle generatePuzzle(int size, String[] text){
-        Puzzle puzzle = new Puzzle(size);
+    public Puzzle generatePuzzle(String[] text){
+        Puzzle puzzle = new Puzzle(text.length);
 
         for (int i = 0; i < text.length; i++ ) {
             char[] letters = text[i].toCharArray();

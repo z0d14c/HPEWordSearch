@@ -118,12 +118,7 @@ public class ImageProcessor {
     private Puzzle puzzle;
     public String[] processImage(Bitmap image,Uri imageurl){
         image = PhotoHelper.touchUpPhoto(image, imageurl);
-        //String OCRresult =  getOCRText(image);
-        /*For testing*/
-        String OCRresult = "ab dc\n" +
-                            "a b c d\n" +
-                            "ab cd\n" +
-                            "abc d\n";
+        String OCRresult =  getOCRText(image);
         boolean processable = false;
         String[] lines = groomText(OCRresult);
         if (resultsGood(lines)){

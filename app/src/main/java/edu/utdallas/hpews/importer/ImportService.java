@@ -18,6 +18,7 @@ import android.widget.TextView;
 import java.io.File;
 import java.io.IOException;
 
+import edu.utdallas.hpews.PuzzleActivity;
 import edu.utdallas.hpews.R;
 import edu.utdallas.hpews.model.Puzzle;
 
@@ -31,7 +32,6 @@ public class ImportService extends ContextWrapper{
     private ImageHandler imageHandler;
     private Bitmap image;
     private Uri imageurl;
-
 
     public ImportService(Context context){
         super(context);
@@ -57,7 +57,7 @@ public class ImportService extends ContextWrapper{
             String[] processedText = imageProcessor.processImage(image, imageurl);
             if ( processedText!= null){
                 Log.v(CLASS_TAG, "Image has been processed");
-                //Launch Solver activity from here
+                launchPuzzleActivity(imageProcessor.getPuzzle());
             }
             else{
                 Log.v(CLASS_TAG, "Image could not be processed");
@@ -71,6 +71,14 @@ public class ImportService extends ContextWrapper{
             Log.w("ProcessImage", "No image selected, cannot process");
             showErrorDialog("noImage");
         }
+    }
+
+    private void launchPuzzleActivity(Puzzle puzzle){
+        Intent intent = new Intent(this, PuzzleActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(PuzzleActivity.PUZZLE_PARAMETER_KEY, puzzle);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     public void showErrorDialog(String error){

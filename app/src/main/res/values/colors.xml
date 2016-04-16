@@ -6,4 +6,16 @@
     <color name="colorGreen">#759AAB</color>
     <color name="colorPurple">#401F3E</color>
     <color name="colorWhite">#FFFFFF</color>
+
+    <color name="lightColorPrimary">#00B188</color>
+    <color name="lightColorPrimaryDark">#CDCDCD</color>
+    <color name="lightColorAccent">#00B188</color>
+
+    <color name="utilityColorPrimary">#00B188</color>
+    <color name="utilityColorPrimaryDark">#00A57F</color>
+    <color name="utilityColorAccent">#00B188</color>
+
+    <color name="importPhotoBackground">#F5F5F5</color>
+
+    <color name="white">#FFFFFF</color>
 </resources>

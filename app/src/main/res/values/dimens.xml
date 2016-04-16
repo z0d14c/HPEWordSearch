@@ -3,4 +3,24 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="home_image_bottom_margin">30dp</dimen>
+
+    <dimen name="home_optionsbar_height">55dp</dimen>
+
+    <dimen name="home_optionsbar_button_horizontal_margin">20dp</dimen>
+    <dimen name="home_optionsbar_button_horizontal_margin_half">10dp</dimen>
+
+    <dimen name="home_logo_hpe_height">65dp</dimen>
+    <dimen name="home_logo_hpe_width">156dp</dimen>
+    <dimen name="home_logo_hpe_horizontal_margin">24dp</dimen>
+    <dimen name="home_logo_hpe_vertical_margin">40dp</dimen>
+
+    <dimen name="home_description_vertical_margin">40dp</dimen>
+
+    <dimen name="import_icon_photo_height">40dp</dimen>
+    <dimen name="import_icon_photo_width">40dp</dimen>
+
+    <dimen name="import_icon_description_distance">20dp</dimen>
+
 </resources>

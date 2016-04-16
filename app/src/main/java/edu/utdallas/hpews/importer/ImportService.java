@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.io.File;
@@ -66,6 +67,10 @@ public class ImportService extends ContextWrapper{
 
             TextView OCRText = (TextView) activityRef.findViewById(R.id.OCRText);
             OCRText.setText(recognizedText);
+            OCRText.setVisibility(View.VISIBLE);
+
+            RelativeLayout puzzleControls = (RelativeLayout) activityRef.findViewById(R.id.importPuzzleControls);
+            puzzleControls.setVisibility(View.INVISIBLE);
         }
         else{
             Log.w("ProcessImage", "No image selected, cannot process");
@@ -111,9 +116,7 @@ public class ImportService extends ContextWrapper{
             catch(Exception e){
                 e.printStackTrace();
             }
-        }
-
-        if(requestCode ==REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK){
+        }else if(requestCode ==REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK){
             try{
                 Bundle extras = data.getExtras();
                 image = (Bitmap) extras.get("data");
@@ -126,6 +129,8 @@ public class ImportService extends ContextWrapper{
             catch(Exception e){
                 e.printStackTrace();
             }
+        } else {
+            Log.e(CLASS_TAG, "nope " + requestCode + " " + resultCode + " " + (data != null) + " " + (data.getData()!=null));
         }
     }
 
@@ -135,5 +140,13 @@ public class ImportService extends ContextWrapper{
         ImageView imageView = (ImageView) activityRef.findViewById(imageViewID);
         imageView.setImageBitmap(image);
 
+        RelativeLayout photoControls = (RelativeLayout) activityRef.findViewById(R.id.importPhotoControls);
+        photoControls.setVisibility(View.INVISIBLE);
+
+        RelativeLayout photoButton = (RelativeLayout) activityRef.findViewById(R.id.importPhotoButton);
+        photoButton.setBackgroundColor(getResources().getColor(R.color.white));
+
+        ImageView photoIcon = (ImageView) activityRef.findViewById(R.id.importPhotoIconAlt);
+        photoIcon.setVisibility(View.VISIBLE);
     }
 }

@@ -1,7 +1,19 @@
 <resources>
-    <string name="app_name">HPEWS</string>
-    <string name="title_activity_import">ImportActivity</string>
+    <string name="app_name">HPE Puzzle</string>
+    <string name="title_activity_import">Import</string>
     <string name="title_activity_generate">GeneratorActivity</string>
+
+    <string name="home_description">Discover, scan, and solve word puzzles with\nEnterprise Word Search.</string>
+
+    <string name="import_prompt_photo">Tap to take or choose a puzzle photo to import</string>
+    <string name="import_prompt_puzzle">And the detected puzzle text will appear here</string>
+
+    <string name="import_dialog">Import from photo</string>
+
+    <string-array name="import_dialog_options">
+        <item>Pick a Photo</item>
+        <item>Take a Photo</item>
+    </string-array>
 
     <string name="dialog_error_title">Oops!</string>
     <string name="dialog_button_ok">Ok</string>

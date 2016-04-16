@@ -15,5 +15,7 @@
     <color name="utilityColorPrimaryDark">#00A57F</color>
     <color name="utilityColorAccent">#00B188</color>
 
+    <color name="importPhotoBackground">#F5F5F5</color>
+
     <color name="white">#FFFFFF</color>
 </resources>

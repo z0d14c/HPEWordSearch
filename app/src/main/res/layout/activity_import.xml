@@ -1,27 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
+    android:background="@color/white"
+    android:orientation="vertical"
     tools:context=".importer.ImportServiceActivity">
 
-    <android.support.design.widget.AppBarLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/importPhotoBackground"
+        android:id="@+id/importPhotoButton"
+        android:clickable="true"
+        android:onClick="askForPhotoType">
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:layout_height="match_parent"
+            android:id="@+id/imageView"
+            android:adjustViewBounds="false"
+            android:scaleType="centerCrop"
+            android:alpha="0.05"
+            android:clickable="true"
+            android:onClick="askForPhotoType"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/import_icon_photo_height"
+            android:src="@drawable/import_photo"
+            android:id="@+id/importPhotoIconAlt"
+            android:layout_centerInParent="true"
+            android:visibility="invisible"
+            android:clickable="true"
+            android:onClick="askForPhotoType"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/importPhotoControls"
+            android:clickable="true"
+            android:onClick="askForPhotoType">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/import_icon_photo_height"
+                android:layout_above="@+id/anchorPhoto"
+                android:src="@drawable/import_photo"
+                android:id="@+id/importPhotoIcon"
+                android:clickable="true"
+                android:onClick="askForPhotoType"/>
+            <View
+                android:id="@+id/anchorPhoto"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_centerInParent="true"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/import_prompt_photo"
+                android:layout_below="@+id/importPhotoIcon"
+                android:textAlignment="center"
+                android:alpha="0.3"
+                android:layout_marginTop="@dimen/import_icon_description_distance"
+                android:clickable="true"
+                android:onClick="askForPhotoType"/>
+        </RelativeLayout>
+    </RelativeLayout>
 
-    </android.support.design.widget.AppBarLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="test text"
+            android:textAlignment="center"
+            android:alpha="0.6"
+            android:layout_centerInParent="true"
+            android:visibility="invisible"
+            android:id="@+id/OCRText"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/importPuzzleControls">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/import_icon_photo_height"
+                android:layout_above="@+id/anchorPuzzle"
+                android:src="@drawable/import_puzzle"
+                android:id="@+id/importPuzzleIcon"/>
+            <View
+                android:id="@+id/anchorPuzzle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_centerInParent="true"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/import_prompt_puzzle"
+                android:layout_below="@+id/importPuzzleIcon"
+                android:textAlignment="center"
+                android:alpha="0.3"
+                android:layout_marginTop="@dimen/import_icon_description_distance"/>
+        </RelativeLayout>
+    </RelativeLayout>
 
-    <include layout="@layout/content_import" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/home_optionsbar_height"
+        android:orientation="horizontal"
+        android:background="@color/utilityColorPrimary"
+        android:gravity="right">
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Puzzle It"
+            style="?android:attr/borderlessButtonStyle"
+            android:textColor="@color/white"
+            android:paddingLeft="@dimen/home_optionsbar_button_horizontal_margin"
+            android:paddingRight="@dimen/home_optionsbar_button_horizontal_margin"
+            android:layout_marginRight="@dimen/home_optionsbar_button_horizontal_margin_half"
+            android:id="@+id/ProcessImage"
+            android:onClick="ProcessImage"/>
 
-</android.support.design.widget.CoordinatorLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -26,7 +26,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Discover, scan, and solve word puzzles with\nEnterprise Word Search."
+            android:text="@string/home_description"
             android:layout_marginLeft="@dimen/home_logo_hpe_horizontal_margin"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="@dimen/home_description_vertical_margin"/>

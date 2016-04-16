@@ -18,4 +18,9 @@
 
     <dimen name="home_description_vertical_margin">40dp</dimen>
 
+    <dimen name="import_icon_photo_height">40dp</dimen>
+    <dimen name="import_icon_photo_width">40dp</dimen>
+
+    <dimen name="import_icon_description_distance">20dp</dimen>
+
 </resources>

@@ -26,7 +26,7 @@ public class MainActivity extends FragmentActivity{
         // We need lazy (vs. static) initialization because we depend on the Context having been
         // initialized; after we make sure that the "small" size performs well, we can try to bump this
         // to MEDIUM or LARGE.
-        DictionaryService.initialize(getApplicationContext(), DictionaryService.SIZE.MEDIUM);
+        DictionaryService.initialize(getApplicationContext(), DictionaryService.SIZE.SMALL);
     }
 
     public void onStart(){

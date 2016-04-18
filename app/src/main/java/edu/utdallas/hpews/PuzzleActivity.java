@@ -1,29 +1,23 @@
 package edu.utdallas.hpews;
 
-import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Display;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import edu.utdallas.hpews.R;
-import edu.utdallas.hpews.generator.GeneratorService;
+import edu.utdallas.hpews.model.Coordinate;
 import edu.utdallas.hpews.model.Puzzle;
 import edu.utdallas.hpews.model.Solution;
 import edu.utdallas.hpews.solver.SolverTask;
@@ -34,133 +28,181 @@ public class PuzzleActivity extends AppCompatActivity {
 
     public static final String PUZZLE_PARAMETER_KEY = "puzzle";
 
-    String LogTag = "PuzzleActivity";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle);
+        final Point screenSize = new Point();
+        getWindowManager().getDefaultDisplay().getSize(screenSize);
         final Context context = this;
 
-        Puzzle puzzle = (Puzzle)getIntent().getSerializableExtra(PUZZLE_PARAMETER_KEY);
+
+
+        // extract Puzzle from Intent
+        final Puzzle puzzle = (Puzzle)getIntent().getSerializableExtra(PUZZLE_PARAMETER_KEY);
         if (puzzle == null) {
             throw new IllegalStateException("puzzle missing from Intent extras");
         }
 
-        final int dimensions = puzzle.getDimension();
-        final LinearLayout WordPuzzleLayout = (LinearLayout) findViewById(R.id.WordPuzzleLayout);
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        Integer width = size.x;
-        Integer height = size.y;
+
+
+        // initialize puzzle display adapter
+        int cellDimension = screenSize.x / puzzle.getDimension();
         GridView gridview = (GridView) findViewById(R.id.WordPuzzle);
-        if (gridview != null) {
-            Log.v(LogTag, "activating grid adapter");
-            String[] letters = new String[81];
-            for(int i = 0; i<81; i++) {
-                letters[i] = "A";
-            }
-            gridview.setNumColumns(dimensions);
-            gridview.setAdapter(new PuzzleAdapter(context, puzzle));
-        }
-        Log.v(LogTag, width.toString());
-        Log.v(LogTag, height.toString());
-        // need Global layout listener to determine WordPuzzleLayout when it renders
-//        ViewTreeObserver vto = WordPuzzleLayout.getViewTreeObserver();
-//        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//            @Override
-//            public void onGlobalLayout() {
-//                int width = WordPuzzleLayout.getMeasuredWidth();
-//                int height = WordPuzzleLayout.getMeasuredHeight();
-//                GridView gridview = (GridView) findViewById(R.id.WordPuzzle);
-//                if (gridview != null) {
-//                    Log.v(LogTag, "activating grid adapter");
-//                    gridview.setNumColumns(dimensions);
-//                    gridview.setAdapter(new PuzzleAdapter(context, dimensions, width, height));
-//                }
-//            }
-//        });
-//        gridview.setOnItemClickListener(new OnItemClickListener() {
-//            public void onItemClick(AdapterView<?> parent, View v,
-//                                    int position, long id) {
-//                Toast.makeText(HelloGridView.this, "" + position,
-//                        Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        gridview.setNumColumns(puzzle.getDimension());
+        gridview.setColumnWidth(cellDimension);
+        final PuzzleAdapter puzzleAdapter = new PuzzleAdapter(puzzle, cellDimension);
+        gridview.setAdapter(puzzleAdapter);
 
 
 
-        // when you're done setting up the initial UI state (including solution progress control)
+        // initialize Solver async task
+        final ProgressDialog progress = new ProgressDialog(this);
+        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progress.setTitle("Solving Puzzle");
+        progress.show();
         new SolverTask(
                 new SolverTaskProgressUpdateCallback() {
                     @Override
                     public void progressUpdate(int progressPercent) {
-                        // Thomas/Izu:  fill in code to react to progress update parameter periodically
+                        progress.setProgress(progressPercent*10);
                     }
                 },
                 new SolverTaskFinishedCallback() {
                     @Override
                     public void finished(List<Solution> solutions) {
-                        // Thomas/Izu:  fill in code to react to solution process completing
+                        progress.dismiss();
+                        GridView gridview = (GridView) findViewById(R.id.SolutionBank);
+                        gridview.setAdapter(new SolutionAdapter(puzzle, puzzleAdapter));
                     }
                 }
         ).execute(puzzle);
     }
 
+
+
     private class PuzzleAdapter extends BaseAdapter {
-        private Context context;
-        private String[] PuzzleLetters;
-        private int dimensions;
-        private int width;
-        private int height;
-        public PuzzleAdapter(Context context, Puzzle puzzle) {
-            this.context = context;
 
-            this.dimensions = puzzle.getDimension();
-            this.PuzzleLetters = new String[this.dimensions * this.dimensions];
-            int i = 0;
-            for (int y = 0; y < this.dimensions; y++) {
-                for (int x = 0; x < this.dimensions; x++) {
-                    this.PuzzleLetters[i++] = puzzle.getCharacterAt(x, y).toString();
-                }
-            }
+        private Puzzle puzzle;
+        private int cellDimension;
+        private Map<Coordinate, TextView> viewMap = new HashMap<>();
+
+        public PuzzleAdapter(Puzzle puzzle, int cellDimension) {
+            this.puzzle = puzzle;
+            this.cellDimension = cellDimension;
         }
 
-        // return number of items (characters) in puzzle
+        @Override
         public int getCount() {
-            return this.PuzzleLetters.length;
+            return this.puzzle.getDimension() * this.puzzle.getDimension();
         }
-        //
+
+        @Override
         public Object getItem(int position) {
-            return null;
+            Coordinate coordinate = this.getCoordinate(position);
+            return this.puzzle.getCharacterAt(coordinate.getX(), coordinate.getY());
         }
 
+        @Override
         public long getItemId(int position) {
-            return 0;
+            return position;
         }
 
-        //return dimensions
-        //TODO: make return puzzle.getDimension()
-        public int getDimension() {
-            return this.dimensions;
-        }
-
+        @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            TextView tv;
-//            if (convertView == null) {
-            tv = new TextView(context);
-//            tv.setLayoutParams(new GridView.LayoutParams(width/dimensions, height/dimensions));
-            tv.setLayoutParams(new GridView.LayoutParams(85, 85));
-//            }
-//            else {
-//                tv = (TextView) convertView;
-//            }
 
-            tv.setText(this.PuzzleLetters[position]);
+            Coordinate coordinate = this.getCoordinate(position);
+
+            TextView tv = convertView != null ? (TextView)convertView : new TextView(parent.getContext());
+
+            tv.setText(this.puzzle.getCharacterAt(coordinate.getX(), coordinate.getY()).toString());
+            tv.setLayoutParams(new GridView.LayoutParams(this.cellDimension, this.cellDimension));
+            tv.setGravity(Gravity.CENTER);
+
+            if (this.viewMap.containsKey(coordinate) != true) {
+                this.viewMap.put(coordinate, tv);
+            }
+
+            return tv;
+        }
+
+        private Coordinate getCoordinate(int position) {
+            int y = position / this.puzzle.getDimension();
+            int x = position % this.puzzle.getDimension();
+
+            return new Coordinate(x, y);
+        }
+
+        public void highlight(Coordinate coordinate) {
+            TextView tv = this.viewMap.get(coordinate);
+            tv.setBackgroundColor(getResources().getColor(R.color.utilityColorPrimary));
+            tv.setTextColor(getResources().getColor(R.color.white));
+        }
+
+        public void emphasis(Coordinate coordinate) {
+            TextView tv = this.viewMap.get(coordinate);
+            tv.setPaintFlags(tv.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
+            tv.setTextColor(getResources().getColor(R.color.colorAccent));
+        }
+    }
+
+
+
+    private class SolutionAdapter extends BaseAdapter {
+
+        private Puzzle puzzle;
+        private PuzzleAdapter puzzleAdapter;
+
+        public SolutionAdapter(Puzzle puzzle, PuzzleAdapter puzzleAdapter) {
+            this.puzzle = puzzle;
+            this.puzzleAdapter = puzzleAdapter;
+        }
+
+        @Override
+        public int getCount() {
+            return this.puzzle.getSolutions().size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return this.puzzle.getSolutions().get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            final TextView tv = convertView != null ? (TextView)convertView : new TextView(parent.getContext());
+
+            tv.setText(this.getItem(position).toString());
+            tv.setTextColor(getResources().getColor(R.color.white));
+            tv.setGravity(Gravity.CENTER_VERTICAL);
+
+            tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    tv.setPaintFlags(tv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+                    Solution solution = puzzle.getWordSolution(tv.getText().toString());
+                    boolean firstLetter = true;
+                    for (Coordinate coordinate : solution.getCoordinates()) {
+                        puzzleAdapter.highlight(coordinate);
+                        if (firstLetter) {
+                            puzzleAdapter.emphasis(coordinate);
+                            firstLetter = false;
+                        }
+                    }
+                }
+            });
+
             return tv;
         }
     }
 
 }
-
-

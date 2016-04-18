@@ -55,22 +55,28 @@ public class Solution {
     }
 
 
+
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Solution solution = (Solution) o;
-
-        if (direction != solution.direction) return false;
-        return startingCoordinate.equals(solution.startingCoordinate);
-
+    public String toString() {
+        return this.word;
     }
 
-    @Override
-    public int hashCode() {
-        int result = direction.hashCode();
-        result = 31 * result + startingCoordinate.hashCode();
-        return result;
+
+
+    public boolean conflictsWith(Solution other) {
+        if (this.direction == other.direction || this.direction.getOpposite() == other.direction) {
+            List<Coordinate> theseCoordinates = this.getCoordinates();
+            List<Coordinate> otherCoordinates = other.getCoordinates();
+
+            for (Coordinate thisCoordinate : theseCoordinates) {
+                for (Coordinate otherCoordinate : otherCoordinates) {
+                    if (thisCoordinate.equals(otherCoordinate)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 }

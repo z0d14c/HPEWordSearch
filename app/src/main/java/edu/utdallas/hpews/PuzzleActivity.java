@@ -1,10 +1,13 @@
 package edu.utdallas.hpews;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -116,8 +119,8 @@ public class PuzzleActivity extends AppCompatActivity {
             this.dimensions = puzzle.getDimension();
             this.PuzzleLetters = new String[this.dimensions * this.dimensions];
             int i = 0;
-            for (int x = 0; x < this.dimensions; x++) {
-                for (int y = 0; y < this.dimensions; y++) {
+            for (int y = 0; y < this.dimensions; y++) {
+                for (int x = 0; x < this.dimensions; x++) {
                     this.PuzzleLetters[i++] = puzzle.getCharacterAt(x, y).toString();
                 }
             }

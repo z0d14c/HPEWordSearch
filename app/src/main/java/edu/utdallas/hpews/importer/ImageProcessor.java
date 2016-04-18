@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import edu.utdallas.hpews.generator.GeneratorService;
 import edu.utdallas.hpews.model.Puzzle;
 
 /**
@@ -143,7 +144,7 @@ public class ImageProcessor {
 
        return lines;
     }
-    public final static int MIN_N = 3;
+    public final static int MIN_N = GeneratorService.MIN_DIMENSION;
     private boolean resultsGood(String[] lines){
         boolean isGood = true;
 
@@ -178,7 +179,7 @@ public class ImageProcessor {
         for (int i = 0; i < text.length; i++ ) {
             char[] letters = text[i].toCharArray();
             for (int j = 0; j < letters.length; j++){
-                puzzle.setCharacterAt(i, j, letters[j]);
+                puzzle.setCharacterAt(j, i, letters[j]);
             }
         }
         return puzzle;

@@ -35,7 +35,7 @@ class CandidateVector {
 
     public CandidateVector getOpposite() {
         return new CandidateVector(
-                Coordinate.getCoordinate(this.startingCoordinate, this.direction, this.vector.length()),
+                Coordinate.getCoordinate(this.startingCoordinate, this.direction, this.vector.length()-1),
                 this.direction.getOpposite(),
                 new StringBuilder(this.vector).reverse().toString()
 

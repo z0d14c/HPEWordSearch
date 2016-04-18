@@ -4,13 +4,16 @@ import edu.utdallas.hpews.model.Puzzle;
 import edu.utdallas.hpews.model.Coordinate;
 import edu.utdallas.hpews.model.Direction;
 import edu.utdallas.hpews.solver.DictionaryService;
+
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 
 public class GeneratorService {
 
-    public static final int DEFAULT_DIMENSION = 25;
+    public static final int DEFAULT_DIMENSION = 20;
     public static final int DEFAULT_SOLUTIONS = 10;
     public static final int MAX_ATTEMPTS = 1000;
 
@@ -48,6 +51,14 @@ public class GeneratorService {
         }
 
         Puzzle puzzle = new Puzzle(dimension);
+
+        // sort words in reverse order of length to maximize chances of successful placement
+        Collections.sort(wordList, new Comparator<String>() {
+            @Override
+            public int compare(String lhs, String rhs) {
+                return Integer.compare(rhs.length(), lhs.length());
+            }
+        });
 
         // fill in words
         for (int i = 0; i < wordList.size(); i++) {

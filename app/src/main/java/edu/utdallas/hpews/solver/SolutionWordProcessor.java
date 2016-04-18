@@ -25,15 +25,31 @@ public class SolutionWordProcessor implements WordProcessor {
     @Override
     public void processWord(String word) {
 
+        vectorLoop:
         for (CandidateVector candidateVector : this.candidateVectors) {
             Solution solution = candidateVector.findSolution(word);
             if (solution != null) {
 
-                // only add this solution if its the first at this location/direction
-                // (shortest, by definition, because we are processing dictionary alphabetically)
-                if (this.solutions.contains(solution) != true) {
-                    this.solutions.add(solution);
+                // look for any existing conflicts
+                List<Solution> conflicts = new ArrayList<>();
+                for (Solution existing : solutions) {
+                    if (existing.conflictsWith(solution)) {
+                        if (existing.getLength() < solution.getLength()) {
+                            conflicts.add(existing);
+                        } else {
+                            // if we come across any conflicting existing solution that's longer, move on to the next vector
+                            continue vectorLoop;
+                        }
+                    }
                 }
+
+                // remove any found (smaller) conflicts
+                for (Solution conflict : conflicts) {
+                    solutions.remove(conflict);
+                }
+
+                // add the newly found solution
+                solutions.add(solution);
 
                 // we're only looking for the first occurrence; if there are multiple occurrences,
                 // only the first one will be identified

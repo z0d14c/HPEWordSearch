@@ -4,46 +4,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@color/utilityColorPrimary"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
     tools:context="edu.utdallas.hpews.PuzzleActivity">
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/WordPuzzleLayout"
         android:layout_weight="1">
         <GridView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/WordPuzzle"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:background="@color/colorWhite"
-            android:columnWidth="90dp"
             android:gravity="center"
-            android:horizontalSpacing="10dp"
             android:numColumns="auto_fit"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="10dp">
+            android:stretchMode="columnWidth">
         </GridView>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/SolutionBankLayout"
         android:layout_weight="1">
         <GridView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/SolutionBank"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:columnWidth="90dp"
             android:gravity="center"
-            android:horizontalSpacing="10dp"
-            android:numColumns="auto_fit"
-            android:background="@color/colorGreen"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="10dp">
+            android:numColumns="4"
+            android:background="@color/utilityColorPrimary"
+            android:stretchMode="columnWidth">
         </GridView>
     </LinearLayout>
 

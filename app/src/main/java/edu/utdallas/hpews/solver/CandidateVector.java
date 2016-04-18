@@ -47,7 +47,7 @@ class CandidateVector {
     public Solution findSolution(String word) {
         Solution solution = null;
 
-        int index = this.vector.indexOf(word);
+        int index = this.vector.toLowerCase().indexOf(word);
         if (index != -1) {
             solution = new Solution(
                     word,
